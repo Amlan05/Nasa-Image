@@ -2,12 +2,11 @@
 "use client"; 
 
 import Link from 'next/link';
+import { signOut, useSession } from "next-auth/react";
 import NasaImage from '../components/NasaImage';
 import { useEffect } from 'react';
 import {connect} from "../dbConfig/dbConfig"
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
 
 const Home = () => {
 
@@ -16,10 +15,10 @@ const Home = () => {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (status === 'loading') return; 
+    if (status === 'loading') return;
   
-    if (!session?.user || !localStorage.getItem('isLoggedIn')) {
-        router.push('/login');
+    if (!session?.user) {
+      router.push('/login');
     }
   }, [session, status, router]);
 
@@ -30,13 +29,14 @@ const Home = () => {
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold">NASA Astronomy Picture of the Day</h1>
           <div>
-            <Link href="/login">
+          <button onClick={()=> signOut()} className="bg-slate-950 text-white rounded text-lg w-auto px-6 py-3 uppercase">
+          Logout
+        </button>
+            {/* {!session?.user}{
+              <Link href="/login">
               Login
-            </Link>
-            <span className="mx-2"> | </span>
-            <Link href="/signup">
-              Signup
-            </Link>
+            </Link>  */}
+            {/* } */}
           </div>
         </div>
       </nav>

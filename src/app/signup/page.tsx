@@ -1,11 +1,13 @@
-
+// Import necessary modules
 "use client"; 
 
 import { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
+// Define the Signup component
 const Signup = () => {
     const router = useRouter(); 
     const [username, setUsername] = useState('');
@@ -16,11 +18,9 @@ const Signup = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/users/signup', { email, username, password });
+            const response = await axios.post('/api/users/signup', { username, email, password });
             console.log(response.data);
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('username', username);
-            router.push('/');
+            router.push('/login');
 
         } catch (error:any) {
             console.error('Signup failed', error.message);
@@ -28,6 +28,14 @@ const Signup = () => {
             setError(error.message); 
         }
     }
+
+    const handleGoogleSignIn = async () => {
+        try {
+            await signIn('google', { callbackUrl: "/" });
+        } catch (error) {
+            console.error('Google sign-in failed', error);
+        }
+    };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-8">
@@ -40,11 +48,11 @@ const Signup = () => {
                     </label>
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="username"
+                        id="name"
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Username"
+                        placeholder="Name"
                     />
                 </div>
                 <div className="mb-4">
@@ -79,6 +87,13 @@ const Signup = () => {
                         type="submit"
                     >
                         Sign Up
+                    </button>
+                    <button
+                        className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="button"
+                        onClick={handleGoogleSignIn}
+                    >
+                        Sign Up with Google
                     </button>
                     <Link href="/login"> {/* Add link to the login page */}
                         <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
