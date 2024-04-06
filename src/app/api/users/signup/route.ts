@@ -1,37 +1,48 @@
-// api/signup.ts
-import { NextApiRequest, NextApiResponse } from 'next';
-import bcrypt from 'bcryptjs';
+import {connect} from "@/dbConfig/dbConfig";
 import User from "@/models/userModel";
+import { NextRequest, NextResponse } from "next/server";
+import bcryptjs from "bcryptjs";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { username, password } = req.body;
 
+connect()
+
+
+export async function POST(request: NextRequest){
     try {
+        const reqBody = await request.json()
+        const {username, email, password} = reqBody
 
-        const existingUser = await User.findOne({ username });
+        console.log(reqBody);
 
-      if (existingUser) {
-        return res.status(400).json({ message: 'Username already exists' });
-      }
+        //check if user already exists
+        const user = await User.findOne({email})
 
-      const hashedPassword = await bcrypt.hash(password, 10);
+        if(user){
+            return NextResponse.json({error: "User already exists"}, {status: 400})
+        }
 
-      const newUser = new User({
-        username,
-        password: hashedPassword,
-      });
+        //hash password
+        const salt = await bcryptjs.genSalt(10)
+        const hashedPassword = await bcryptjs.hash(password, salt)
 
-      await newUser.save();
+        const newUser = new User({
+            username,
+            email,
+            password: hashedPassword
+        })
 
-      return res.status(201).json({ message: 'User created successfully' });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Internal server error' });
+        const savedUser = await newUser.save()
+        console.log(savedUser);
+
+        return NextResponse.json({
+            message: "User created successfully",
+            success: true,
+            savedUser
+        })
+        
+
+    } catch (error: any) {
+        return NextResponse.json({error: error.message}, {status: 500})
+
     }
-  } else {
-
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
 }

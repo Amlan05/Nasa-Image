@@ -16,7 +16,7 @@ const Signup = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/users/signup', { username, email, password });
+            const response = await axios.post('/api/users/signup', { email, username, password });
             console.log(response.data);
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('username', username);
@@ -24,6 +24,7 @@ const Signup = () => {
 
         } catch (error:any) {
             console.error('Signup failed', error.message);
+            console.log(error)
             setError(error.message); 
         }
     }
@@ -32,7 +33,7 @@ const Signup = () => {
         <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100 p-8">
             <h1 className="text-3xl font-bold mb-8">Signup</h1>
             <form className="w-full max-w-md" onSubmit={handleSubmit}>
-                {error && <p className="text-red-500 mb-4">{error}</p>} {/* Render error message if error exists */}
+                {error && <p className="text-red-500 mb-4">{error}</p>}     
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
                         Username

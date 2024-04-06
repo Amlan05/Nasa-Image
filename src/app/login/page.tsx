@@ -30,8 +30,7 @@ const Login = () => {
 
     const handleGoogleSignIn = async () => {
         try {
-            await signIn('google');
-            router.push('/');
+            await signIn('google', {callbackUrl : "http://localhost:3000"});
         } catch (error) {
             console.error('Google sign-in failed', error);
         }

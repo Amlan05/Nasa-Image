@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 export async function connect() {
     try {
         mongoose.connect(`mongodb+srv://${process.env.user_name}:${process.env.password}@cluster0.fssnwwr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
-        console.log(process.env.user_name)
         const connection = mongoose.connection;
 
         connection.on('connected', () => {
