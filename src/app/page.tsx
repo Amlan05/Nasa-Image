@@ -1,4 +1,3 @@
-// pages/index.tsx
 "use client"; 
 
 import Link from 'next/link';
@@ -32,11 +31,7 @@ const Home = () => {
           <button onClick={()=> signOut()} className="bg-slate-950 text-white rounded text-lg w-auto px-6 py-3 uppercase">
           Logout
         </button>
-            {/* {!session?.user}{
-              <Link href="/login">
-              Login
-            </Link>  */}
-            {/* } */}
+            
           </div>
         </div>
       </nav>

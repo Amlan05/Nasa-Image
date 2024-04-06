@@ -1,13 +1,10 @@
-
-"use client"; 
 import { useState } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
-// Define the Login component
 const Login = () => {
-    const router = useRouter(); // Using useRouter within the component body
+    const router = useRouter(); 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -19,20 +16,19 @@ const Login = () => {
                 email: email,
                 password: password,
                 redirect: false,
-              });
+            });
 
-              if (res?.error) {
+            if (res?.error) {
                 console.log(res);
-                setError("error");
-              }
-        
-              setError("");
-              router.push("/");
+                setError("Invalid credentials. Please try again.");
+            } else {
+                router.push("/");
+            }
 
         } catch (error) {
             console.log(error);
-            setError("");
-          }
+            setError("Something went wrong. Please try again later.");
+        }
     }
 
     const handleGoogleSignIn = async () => {
@@ -40,6 +36,7 @@ const Login = () => {
             await signIn('google', { callbackUrl: "/" });
         } catch (error) {
             console.error('Google sign-in failed', error);
+            setError("Google sign-in failed. Please try again.");
         }
     };
 
@@ -50,7 +47,7 @@ const Login = () => {
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-                        Username
+                        Email
                     </label>
                     <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -88,7 +85,7 @@ const Login = () => {
                     >
                         Sign In with Google
                     </button>
-                    <Link href="/signup" passHref={true} legacyBehavior={true}>
+                    <Link href="/signup" passHref={true}>
                         <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
                             Signup
                         </a>

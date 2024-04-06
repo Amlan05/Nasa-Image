@@ -1,12 +1,9 @@
-"use client"; 
-
 import { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 
-// Define the Signup component
 const Signup = () => {
     const router = useRouter(); 
     const [username, setUsername] = useState('');
@@ -23,7 +20,6 @@ const Signup = () => {
 
         } catch (error:any) {
             console.error('Signup failed', error.message);
-            console.log(error)
             setError(error.message); 
         }
     }
@@ -94,7 +90,7 @@ const Signup = () => {
                     >
                         Sign Up with Google
                     </button>
-                    <Link href="/login"> {/* Add link to the login page */}
+                    <Link href="/login">
                         <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
                             Login
                         </a>

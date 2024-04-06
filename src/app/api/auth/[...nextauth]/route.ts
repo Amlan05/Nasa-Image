@@ -1,4 +1,3 @@
-// Your original file
 
 import authOptions from '../auth';
 import NextAuth from 'next-auth';

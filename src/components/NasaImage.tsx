@@ -1,4 +1,3 @@
-"use client"; 
 // Components/NasaImage.tsx
 import { useEffect, useState } from 'react';
 
@@ -23,11 +22,11 @@ const NasaImage = () => {
   }, []);
 
   return imageUrl ? (
-    <div className="w-96 h-auto border border-gray-300 rounded-lg overflow-hidden p-4">
-      <img src={imageUrl} alt="NASA APOD" className="w-full h-auto" />
+    <div className="max-w-full border border-gray-300 rounded-lg overflow-hidden p-2">
+      <img src={imageUrl} alt="NASA APOD" className="w-full h-auto" style={{ maxWidth: '100%' }} />
     </div>
   ) : (
-    <p className="text-xl text-gray-500">Loading...</p>
+    <p className="text-lg text-gray-500 text-center">Loading...</p>
   );
 };
 

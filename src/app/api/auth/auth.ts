@@ -1,4 +1,3 @@
-// auth.ts
 
 import { NextAuthOptions } from "next-auth";
 import { connect } from "@/dbConfig/dbConfig";
